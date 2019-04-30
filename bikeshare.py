@@ -9,6 +9,7 @@ import time
 import pandas as pd
 import numpy as np
 import calendar as cal
+import matplotlib.pyplot as plt
 
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
@@ -118,7 +119,7 @@ def load_data(city, month, day):
         
     if month != 'all':
     # use the index of the months list to get the corresponding int
-        months = ['january', 'february', 'march', 'april', 'may', 'june','july','august','september','october','novebmber','december']
+        months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
 
         df = df[df['month'] == month]
@@ -135,7 +136,16 @@ def time_stats(df):
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-
+    
+    #adding histogram of times
+    plt.hist(df['Start Time'].dt.hour, bins='auto', edgecolor='black')
+    plt.title('Histogram of Travel Frequency by Hour')
+    plt.xlabel('Hour of the Day')
+    plt.ylabel('Count of Trips')
+    plt.axis('tight')
+    plt.grid()
+    plt.show()
+   
     # display the most common month
     popular_month = df['month'].mode()[0]
     print('Most Popular Month: \n',cal.month_name[popular_month])
@@ -143,7 +153,7 @@ def time_stats(df):
     # display the most common day of week
     popular_day = df['day'].mode()[0]
     print('Most Popular Day: \n',popular_day )
-    
+ 
     # display the most common start hour
     popular_hour = df['hour'].mode()[0]
     print('Most Popular Hour: \n',popular_hour )
@@ -182,9 +192,7 @@ def station_stats(df):
     """
     #popular_combination = df[['Start Station', 'End Station']].mode().loc[0]
     popular_combination2 = df.groupby(['Start Station','End Station']).size().sort_values(ascending = False).head(1)
-    #print('\nThe most popular trip is from {} to {}.'.format(popular_combination['Start Station'],popular_combination['End Station']))
     print('\nThe most popular trip is:\n',popular_combination2)
-    #print('\nThe most popular trip is:\n',popular_combination)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
