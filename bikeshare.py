@@ -26,6 +26,8 @@ def get_filters():
     print('Hello! Let\'s explore some US bikeshare data!')
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     #city = input ('Select from the following cities that you would like information for:\n : ')
+    
+    # For all user inputs, I took the approach of locking down the choices to prevent user input error
     while True:
         try:
             city = int(input ('Select from the following cities that you would like information for:\n 1. Chicago,\n 2. New York City,\n 3. Washington DC\n : '))
@@ -127,7 +129,9 @@ def load_data(city, month, day):
     return df
 
 def time_stats(df):
-    """Displays statistics on the most frequent times of travel."""
+    """Displays statistics on the most frequent times of travel.
+    
+    Used Calendar module to convert the numeric month into the more user-friendly textual month name."""
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
@@ -163,6 +167,19 @@ def station_stats(df):
     print('\nMost Popular Ending Station:  ',popular_end_station)
 
     # display most frequent combination of start station and end station trip
+    """Approach for calculating most popular trip found in Knowledge - "Finding Combination Mode", response by Paul G:
+	"You are asking a question I struggled with for a long time. I found it in another Knowledge Base question. Research
+    the function "groupby". It worked something like this for me:
+	data_frame['col_1', ... , 'col_n'].groupby(['col_1', ... , 'col_n']).size().nlargest(i). I do not know enough about 
+    the groupby(), size(), and nlargest() functions to explain why this works - I an a newbie like you. It would be great 
+    if the mentors can tell us why this works and if there are other and possibly better ways to create the same information.
+	Hope this helps"
+	Profile image
+	Paul G"
+	
+	I also discussed the above with Raheel, who suggested al alternate method using .mode(); however, directly comparing 
+    the products of both approaches, the groupby method appeared to be more accurate, so I went with that approach."
+    """
     #popular_combination = df[['Start Station', 'End Station']].mode().loc[0]
     popular_combination2 = df.groupby(['Start Station','End Station']).size().sort_values(ascending = False).head(1)
     #print('\nThe most popular trip is from {} to {}.'.format(popular_combination['Start Station'],popular_combination['End Station']))
@@ -202,6 +219,7 @@ def user_stats(df):
     print('Count of Different User Types: ',user_types)
 
     #insert error handling
+    #Bypassed calculations requiring gender and birthdate information when such is not available
     try:
     # Display counts of gender
         user_gender = df.groupby(['Gender']) ['Gender'].count()
