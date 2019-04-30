@@ -132,14 +132,6 @@ def time_stats(df):
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-
-    # display the most common month
-    popular_month = df['month'].mode()[0]
-    print('Most Popular Month: \n',cal.month_name[popular_month])
-
-    # display the most common day of week
-    popular_day = df['day'].mode()[0]
-    print('Most Popular Day: \n',popular_day )
     
     #adding histogram of times
     plt.hist(df['Start Time'].dt.hour, bins='auto', edgecolor='black')
@@ -149,7 +141,15 @@ def time_stats(df):
     plt.axis('tight')
     plt.grid()
     plt.show()
-    
+   
+    # display the most common month
+    popular_month = df['month'].mode()[0]
+    print('Most Popular Month: \n',cal.month_name[popular_month])
+
+    # display the most common day of week
+    popular_day = df['day'].mode()[0]
+    print('Most Popular Day: \n',popular_day )
+ 
     # display the most common start hour
     popular_hour = df['hour'].mode()[0]
     print('Most Popular Hour: \n',popular_hour )
