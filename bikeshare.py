@@ -9,6 +9,7 @@ import time
 import pandas as pd
 import numpy as np
 import calendar as cal
+import matplotlib.pyplot as plt
 
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
@@ -139,6 +140,15 @@ def time_stats(df):
     # display the most common day of week
     popular_day = df['day'].mode()[0]
     print('Most Popular Day: \n',popular_day )
+    
+    #adding histogram of times
+    plt.hist(df['Start Time'].dt.hour, bins='auto', edgecolor='black')
+    plt.title('Histogram of Travel Frequency by Hour')
+    plt.xlabel('Hour of the Day')
+    plt.ylabel('Count of Trips')
+    plt.axis('tight')
+    plt.grid()
+    plt.show()
     
     # display the most common start hour
     popular_hour = df['hour'].mode()[0]
