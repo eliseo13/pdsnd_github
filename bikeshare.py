@@ -117,7 +117,7 @@ def load_data(city, month, day):
         
     if month != 'all':
     # use the index of the months list to get the corresponding int
-        months = ['january', 'february', 'march', 'april', 'may', 'june','july','august','september','october','novebmber','december']
+        months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
 
         df = df[df['month'] == month]
@@ -173,11 +173,8 @@ def station_stats(df):
     print('\nMost Popular Ending Station:  ',popular_end_station)
 
     # display most frequent combination of start station and end station trip
-    #popular_combination = df[['Start Station', 'End Station']].mode().loc[0]
     popular_combination2 = df.groupby(['Start Station','End Station']).size().sort_values(ascending = False).head(1)
-    #print('\nThe most popular trip is from {} to {}.'.format(popular_combination['Start Station'],popular_combination['End Station']))
     print('\nThe most popular trip is:\n',popular_combination2)
-    #print('\nThe most popular trip is:\n',popular_combination)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
